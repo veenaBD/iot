@@ -19,8 +19,8 @@ $username=$row['userName']
 $filename=hash('sha256',strrev(substr($tempID,0,strpos($tempID,'@'))).$row['userPass']).".json";
 $json_file = fopen($filename, "w");
 */
-$username="veena";
-$userId=12;
+$username="Mouna";
+$userId=15;
 $filename='8bb96db453a58019d25531f97e9d34a5aa2f04d8b9b77ef9ef8116c363f85a31.json';
 //$filename='sample.json';
 date_default_timezone_set("Asia/Kolkata");
@@ -62,19 +62,8 @@ else{
 
 }
 
-if(isset($_POST['roomname'])){//save it on json
-	$roomname = $_POST['roomname'];
- // echo "Device Id = ".$deviceId." & pin = ".$gpioPin." is = ".$toggle;
-$json_file = file_get_contents($filename);
-$stats = json_decode($json_file);
-foreach ($stats->status as $i => $stat) {
-	if(substr($stat->id,0,3) == $deviceId){
-		//$n='pin'.$gpioPin;
-		//echo $stat->$n.strlen($stat->$n);
-		//$stat->$n=$toggle.substr($stat->$n,1,strlen($stat->$n)-1);
-	}
-}
-
+if(isset($_POST['roomname'])){
+	//save it on json
 }  
   
 $json_file = file_get_contents($filename);//
@@ -171,7 +160,7 @@ $btns[$i]="
                 </div>
             </div>
 </div>
-";
+"; 
 
 $display[$i]="
    <div class='togglehide popup' id='room".$i."'>
@@ -201,18 +190,50 @@ $display[$i]="
 	$scrpt[$i]=$scrpt[$i]."
 		});
 	});	
-	 $('#roomicon".$i."').click(function(){
-		 $('#iconlist".$i."').toggleClass('togglehide');//alert('testing');
+	 $('#roomicon1".$i."').click(function(){
+		 $('#iconlist1".$i."').toggleClass('togglehide');//alert('testing');
 	});
-	$('.dropdown-content img').click(function(){
+	 $('#roomicon2".$i."').click(function(){
+		 $('#iconlist2".$i."').toggleClass('togglehide');//alert('testing');
+	});
+	 $('#roomicon3".$i."').click(function(){
+		 $('#iconlist3".$i."').toggleClass('togglehide');//alert('testing');
+	});
+	 $('#roomicon4".$i."').click(function(){
+		 $('#iconlist4".$i."').toggleClass('togglehide');//alert('testing');
+	});
+	$('.dropdown-content1 img').click(function(){
 		var icn=$(this).attr('src')
 		//alert(icn);
 		var roomicon='#roomicon'+($(this).parent().attr('id').substring(8)) + ' img';
 		//alert(roomicon);
 		$(roomicon).attr('src',icn);
-		$(this).parent().toggleClass('togglehide')
+		
+	});
+	$('.dropdown-content2 img').click(function(){
+		var icn=$(this).attr('src')
+		//alert(icn);
+		var roomicon='#roomicon'+($(this).parent().attr('id').substring(8)) + ' img';
+		//alert(roomicon);
+		$(roomicon).attr('src',icn);
+		
+	});
+	$('.dropdown-content3 img').click(function(){
+		var icn=$(this).attr('src')
+		//alert(icn);
+		var roomicon='#roomicon'+($(this).parent().attr('id').substring(8)) + ' img';
+		//alert(roomicon);
+		$(roomicon).attr('src',icn);
+		
+	});
+	$('.dropdown-content4 img').click(function(){
+		var icn=$(this).attr('src')
+		//alert(icn);
+		var roomicon='#roomicon'+($(this).parent().attr('id').substring(8)) + ' img';
+		//alert(roomicon);
+		$(roomicon).attr('src',icn);
+		
 	});";
-	
 //Customising te room naem and button name form; initially it shoud be hidden
 //Change <imput>placeholder will show the current name like room21/ study room
 //There will be arrow link; if you click it will slide down and show the 4 button name input fieldset
@@ -223,23 +244,49 @@ $display[$i]="
 
 $forms[$i]="
 <!--	<h3 style='padding: 0px 10px;left:13px;position: relative;display: inline-block;'>Room Name:</h3>-->
-	<input type='text' name='roomname' placeholder='".$room[$i]."' style='border: 2px solid #ccc;padding: 6px;margin: 10px 0px;'>
-	<div class='roomicon'>
-<div class='dropbtn' id='roomicon".$i."'><img src='img/image3.png'></div>
-  <div id='iconlist".$i."' class='dropdown-content togglehide'>
-    <img id='icon1' src='img/image1.png'>
-	<img id='icon3' src='img/image3.png'>
-	<img id='icon5' src='img/image5.png'>
-	<img id='icon7' src='img/image7.png'>
-	<img id='icon4' src='img/image4.png'>
-	</div></div>
+	<div class='imagess' style='padding-top:3%;'>
+	<div id='img1".$i."' class='icon_butn' style='position:absolute;top:15%;right:3%;'></div>
+	<div id='img2".$i."' class='icon_butn' style='position:absolute;top:42%;right:3%;'></div>
+	<div id='img3".$i."' class='icon_butn' style='position:absolute;top:68%;right:3%;'></div>
+</div>
 <!--	<div id='arrow'>	<img src='img/arrow.jpg'  style='width:40px;position:absolute;'>	</div>-->
-<div class='imagess' style='padding-top:3%;'>
-	<div id='img1".$i."' class='icon_butn'></div>
-	<div id='img2".$i."' class='icon_butn'></div>
-	<div id='img3".$i."' class='icon_butn'></div>
-	<div id='img4".$i."' class='icon_butn'></div>
-</div><br>
+<input type='text' id='changeroom".$i."' name='roomname' placeholder='".$room[$i]."' style='border: 2px solid #ccc;padding: 6px;margin:0px 20px 10px;' >
+	<div class='roomicon'>
+<div class='dropbtn' id='roomicon1".$i."' style='right:147px;'><img src='img/imageson/music-on.png' ></div>
+<div id='iconlist1".$i."' class='dropdown-content1 togglehide' >
+    <img id='icon1' src='img/imageson/fan-on.png'>
+	<img id='icon3' src='img/imageson/bulb-on.png'>
+	<img id='icon5' src='img/imageson/tube-on.png'>
+	<img id='icon7' src='img/imageson/charger-on.png'>
+	<img id='icon4' src='img/imageson/AC-on.png'>
+	</div>
+	<div class='roomicon'>
+<div class='dropbtn' id='roomicon2".$i."' style='right:79px;'><img src='img/imageson/music-on.png'></div>
+<div id='iconlist2".$i."' class='dropdown-content2 togglehide' >
+    <img id='icon11' src='img/imageson/fan-on.png'>
+	<img id='icon33' src='img/imageson/bulb-on.png'>
+	<img id='icon55' src='img/imageson/tube-on.png'>
+	<img id='icon77' src='img/imageson/charger-on.png'>
+	<img id='icon44' src='img/imageson/AC-on.png'>
+	</div>
+	<div class='roomicon'>
+<div class='dropbtn' id='roomicon3".$i."' style='right:9px;'><img src='img/imageson/music-on.png'></div>
+<div id='iconlist3".$i."' class='dropdown-content3 togglehide' >
+    <img id='icon111' src='img/imageson/fan-on.png'>
+	<img id='icon333' src='img/imageson/bulb-on.png'>
+	<img id='icon555' src='img/imageson/tube-on.png'>
+	<img id='icon777' src='img/imageson/charger-on.png'>
+	<img id='icon444' src='img/imageson/AC-on.png'>
+	</div>
+	<div class='roomicon'>
+<div class='dropbtn' id='roomicon4".$i."' style='left:3px;'><img src='img/imageson/music-on.png'></div>
+<div id='iconlist4".$i."' class='dropdown-content4 togglehide' >
+    <img id='icon1111' src='img/imageson/fan-on.png'>
+	<img id='icon3333' src='img/imageson/bulb-on.png'>
+	<img id='icon5555' src='img/imageson/tube-on.png'>
+	<img id='icon7777' src='img/imageson/charger-on.png'>
+	<img id='icon4444' src='img/imageson/AC-on.png'>
+	</div></div></div></div></div>
 ";
 for($j=1;$j<=4;$j++){
 	$scrpt[$i]=$scrpt[$i]."
@@ -249,6 +296,7 @@ for($j=1;$j<=4;$j++){
 	});
 ";	
 }
+
 /*
 $('.gallery').click(function(e){
 	var offset = $(this).offset();
@@ -427,6 +475,8 @@ $t1=date_timestamp_get(date_create(date('D M d, Y h:i:s A')))-date_timestamp_get
 height: 48px;
 display: inline-block;
 margin: 0px 5px;
+
+	
 }
 #gallery{
 	width:384px;
@@ -478,11 +528,12 @@ top:3%;
 .settings_panel {
     position:absolute;
 	left: 31%;
-top: 23%;
+	top: 23%;
 	background-color: #f9f9f9;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	opacity: 0.5;
-    filter: alpha(opacity=50); 
+	opacity: 1;
+    filter: alpha(opacity=50);
+	width:35%;
 }
 .icongallery{
 	display: none;
@@ -500,6 +551,12 @@ top: 23%;
     text-decoration: none;
     display: block;
 }
+/*.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}*/
 
 .dropdown a:hover {background-color: #f1f1f1}
 
@@ -525,10 +582,17 @@ top: 23%;
 	height:5%;
 	margin-top:4%;
 }
+#arrow{
+	display: inline-block;
+position: absolute;
+padding: 16px 0px;
+}
 
 .dropbtn {
+	color: white;
     padding: 2px;
     font-size: 16px;
+    border: none;
     cursor: pointer;
 	background: -webkit-linear-gradient(top, #4c4e5a 0%,#2c2d33 100%);
     background: -moz-linear-gradient(top, #4c4e5a 0%,#2c2d33 100%);
@@ -539,8 +603,16 @@ top: 23%;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+	width: 48px;
+	height: 48px;
+	display: inline-block;
+	margin: 0px 5px;
+	top:50px;
 }
-
+.dropbtn img {
+	width: 48px;
+	height:48px;
+}
 .dropbtn:hover, .dropbtn:focus {
     background-color: #3e8e41;
 }
@@ -550,28 +622,104 @@ top: 23%;
     display: inline-block;
 }
 
-.dropdown-content {
+.dropdown-content1 {
     position: absolute;
+	right:135px;
+	top:75px;
     background-color: #f9f9f9;
     min-width: 100px;
     overflow: auto;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	max-height: 200px;
-	z-index:99;
+	z-index: 99;
 }
 
-.dropdown-content a {
+.dropdown-content1 a {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
+	
+}
+.dropdown-content1 img{
+	width:60px;
+	height:60px;
+}
+.dropdown-content2 {
+    position: absolute;
+	right:50px;
+	top:75px;
+    background-color: #f9f9f9;
+    min-width: 100px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	max-height: 200px;
+	z-index: 99;
+}
+
+.dropdown-content2 a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+	
+}
+.dropdown-content2 img{
+	width:60px;
+	height:60px;
+}
+.dropdown-content3 {
+    position: absolute;
+	right:0px;
+	top:75px;
+    background-color: #f9f9f9;
+    min-width: 100px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	max-height: 200px;
+	z-index: 99;
+}
+
+.dropdown-content3 a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+	
+}
+.dropdown-content3 img{
+	width:60px;
+	height:60px;
+}
+.dropdown-content4 {
+    position: absolute;
+	right:-50px;
+	top:75px;
+    background-color: #f9f9f9;
+    min-width: 100px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	max-height: 200px;
+	z-index: 99;
+}
+
+.dropdown-content4 a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+	
+}
+.dropdown-content4 img{
+	width:60px;
+	height:60px;
 }
 
 
 </style>
 <script>
 function updateall(callback) {
-	$.post( 'update.php', { id : <?php echo $userId; ?> }, function(data) { //	alert(data);
+	$.post( 'update.php', { id : <?php echo $userId; ?> }, function(data) { 	//alert(data);
 		callback(JSON.parse(data));
 	});
 }
@@ -594,7 +742,33 @@ $(document).ready(function(){
 //var dial; 
  $('[data-toggle="tooltip"]').tooltip();   
  $('.alertbox').click(function(){$('.alertbox').hide();$('.popup').hide();});
- $('.settings_btn').click(function(){$('.settings_panel').toggleClass('togglehide');});
+ 
+ $('.settings_btn').click(function(){
+	if($('.settings_panel').hasClass('togglehide')){
+	//update the settings field
+	$.post( 'update.php', { settings : <?php echo $userId; ?> }, function(data) { 	//alert("dhgd ff "+data);
+		//callback(JSON.parse(data));
+		var result=JSON.parse(data);
+		for(var i=0;i<result.length;i++){
+			for(var j=0;j<5;j++){
+				if(!j){
+					var rname='#changeroom'+i;//alert(rname);
+					$(rname).val("");
+					$(rname).attr('placeholder',result[i][j]);
+					alert('Room '+i+' is a '+result[i][j]);
+				}else{
+					
+					alert('Button '+j +' is a '+result[i][j]);
+				}
+			}
+			//alert(pin[i]);
+		}
+	});
+	
+	}	
+$('.settings_panel').toggleClass('togglehide');
+});
+
 <?php
   try{
   if(count($scrpt)>0){
@@ -653,11 +827,6 @@ setInterval(function() {
 		}
 	});
 }, 120000);// try to understand
-/* window.onclick = function(event) {
-  if (!event.target.matches('.roomicon')) {
-	$('.dropdown-content').addClass('togglehide');
-  }
-} */
 /* setTimeout(function() { 
   <?php
   try{
@@ -769,7 +938,7 @@ echo "</form></div>"; */
  <div id="settings" class="settings_panel togglehide">
 	<div style="text-align:center;"><h2>Settings</h2></div>
    <div style="padding: 10px;">
-   <form  method="post" action='update.php'>
+   <form  method="post" action='home.php'>
 <?php 
 if(count($forms)>0){
 		foreach($forms as $i =>$frm){
@@ -779,7 +948,8 @@ if(count($forms)>0){
 ?>
 <button type='submit' style='display: block;color: red;border: 2px;'>Save</button>
     </form></div>
-  </div>  
+  </div>
+  
   
  <div id="gallery" class="icongallery">
  <img src="img/images.jpg">
