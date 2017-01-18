@@ -95,6 +95,14 @@ $room[$i]=substr($inf->id,4,strlen($inf->id)-4);
 } */
 //__________________________________________________________________________________________________
 $renew=0;
+if(isset($_POST['roomname'])){ //check if form was submitted
+  $input = $_POST['roomname']; //get input text
+  echo $input;
+  else{
+	$renew=1;
+	echo "<script> alert('You Have Reahed Max Free Call/Month Limit');</script>";
+}
+}    
 if(isset($_POST['id']) && isset($_POST['pin']) && isset($_POST['toggle'])){
   $deviceId = $_POST['id'];
   $gpioPin = $_POST['pin'];
@@ -137,25 +145,62 @@ if(isset($_POST['settings'])){
 
 $chng=$_POST['settings'];
 $chng.=",";
-//echo $chng."<br>";
-for($k=0,$currentpos=0;$k<3;$k++){
-//echo "<br>".$currentpos." next= ".$chng;
-	$pos = substr($chng,0,strpos($chng, ","));
-//	echo "<br>val= ".$pos;
-$currentpos=strpos($chng, ",")+1;
-$chng=substr($chng,$currentpos,strlen($chng)-$currentpos);
-
+$chngcomma=substr_count($chng,",");
+//echo $chng." => ".$chngcomma ."<br>";
 $json_file = file_get_contents($filename);//
 $stats = json_decode($json_file);
+
 foreach ($stats->status as $i => $stat) {
-
-
+for($k=0,$currentpos=0;$k<$chngcomma;$k++){
+//echo "<br>".$currentpos." next= ".$chng;
+	$pos = substr($chng,0,strpos($chng, ","));
+	//echo "<br>val= ".$pos;
+$posno=substr($pos,0,strpos($pos, "-"));
+//echo " i= ".$i." position " .$posno;
+if($i==$posno){
+	//echo " >>".$pos." sss= ".substr($pos,strpos($pos, "-")+1,1);
+	switch (substr($pos,strpos($pos, "-")+1,1)){
+		case 1:{
+			 $p16= "pin16";
+			// echo " ".$p16." : ".substr($stat->$p16,0,2).substr($pos,strpos($pos, "-")+2,1);
+			 $stat->$p16=substr($stat->$p16,0,2).substr($pos,strpos($pos, "-")+2,1);
+		break;
+		}
+		case 2:{
+			 $p5= "pin05";
+			// echo " ".$p5." : ".substr($stat->$p5,0,2).substr($pos,strpos($pos, "-")+2,1);
+			$stat->$p5=substr($stat->$p5,0,2).substr($pos,strpos($pos, "-")+2,1);
+		break;
+		}
+		case 3:{
+			 $p4= "pin04";
+			// echo " ".$p4." : ".substr($stat->$p4,0,2).substr($pos,strpos($pos, "-")+2,1);
+			$stat->$p4=substr($stat->$p4,0,2).substr($pos,strpos($pos, "-")+2,1);
+		break;
+		}
+		case 4:{
+			 $p0= "pin00";
+			// echo " ".$p0." : ".substr($stat->$p0,0,2).substr($pos,strpos($pos, "-")+2,1);
+			$stat->$p0=substr($stat->$p0,0,2).substr($pos,strpos($pos, "-")+2,1);
+		break;
+		}
+		default:{
+			// echo " null ";
+		break;
+		}
+	}
+$currentpos=strpos($chng, ",")+1;
+$chng=substr($chng,$currentpos,strlen($chng)-$currentpos);
+}
 
 }
 //$chng=substr(lastIndexOf(2),3);
 //lastIndexOf("/")+1,nm.lastIndexOf("-on.pn"
 //alert($chng);
 }
+$json = json_encode($stats, JSON_PRETTY_PRINT);
+file_put_contents($filename, $json); 
+//echo $json;
 }
   
 $json_file = file_get_contents($filename);//
@@ -203,7 +248,8 @@ $dialer[$i]="
 <p><input type='text' name='id' style='display:none;' value='".$ids[$i]."'/></p>
 <p><input type='text' name='pin' style='display:none;' value='16'/></p>
 <p><input type='text' name='toggle' style='display:none;' value='".($pin16s[$i]?0:1)."'/></p>
- <button type='submit' style='display: block;margin-top: -10px;color: transparent;border: none;'><img class='image' id='myImage1' src='img/image".($pin16s[$i]?1:2).".png'>16</button>
+ <button type='submit' style='display: block;margin-top: -10px;color: transparent;border: none;'>
+ <img class='dialimage' id='myImage1' src='img/".($pin16s[$i]?"on/":"off/").substr($stat->$p16,2,1).".png'>16</button>
 </form>
 </label>
     </li>
@@ -214,7 +260,8 @@ $dialer[$i]="
 <p><input type='text' name='id' style='display:none;' value='".$ids[$i]."'/></p>
 <p><input type='text' name='pin' style='display:none;' value='05'/></p>
 <p><input type='text' name='toggle' style='display:none;' value='".($pin5s[$i]?0:1)."'/></p>
- <button type='submit' style='display: block;margin-top: -10px;color: transparent;border: none;'><img class='image' id='myImage1' src='img/image".($pin5s[$i]?3:4).".png'>5</button>
+ <button type='submit' style='display: block;margin-top: -10px;color: transparent;border: none;'>
+ <img class='dialimage' id='myImage1' src='img/".($pin5s[$i]?"on/":"off/").substr($stat->$p5,2,1).".png'>5</button>
 </form></label>
     </li>
     
@@ -224,7 +271,8 @@ $dialer[$i]="
 <p><input type='text' name='id' style='display:none;' value='".$ids[$i]."'/></p>
 <p><input type='text' name='pin' style='display:none;' value='04'/></p>
 <p><input type='text' name='toggle' style='display:none;' value='".($pin4s[$i]?0:1)."'/></p>
- <button type='submit' style='display: block;margin-top: -10px;color: transparent;border: none;'><img class='image' id='myImage1' src='img/image".($pin4s[$i]?5:6).".png'>4</button>
+ <button type='submit' style='display: block;margin-top: -10px;color: transparent;border: none;'>
+ <img class='dialimage' id='myImage1' src='img/".($pin4s[$i]?"on/":"off/").substr($stat->$p4,2,1).".png'>4</button>
 </form></label>
     </li>
     
@@ -234,7 +282,8 @@ $dialer[$i]="
 <p><input type='text' name='id' style='display:none;' value='".$ids[$i]."'/></p>
 <p><input type='text' name='pin' style='display:none;' value='00'/></p>
 <p><input type='text' name='toggle' style='display:none;' value='".($pin0s[$i]?0:1)."'/></p>
- <button type='submit' style='display: block;margin-top: -10px;color: transparent;border: none;'><img class='image' id='myImage1' src='img/image".($pin0s[$i]?7:8).".png'>0</button>
+ <button type='submit' style='display: block;margin-top: -10px;color: transparent;border: none;'>
+ <img class='dialimage' id='myImage1' src='img/".($pin0s[$i]?"on/":"off/").substr($stat->$p0,2,1).".png'>0</button>
 </form></label>
     </li>
     
@@ -351,53 +400,51 @@ $display[$i]="
 
 $forms[$i]="
 <!--	<h3 style='padding: 0px 10px;left:13px;position: relative;display: inline-block;'>Room Name:</h3>-->
-	<div class='imagess' style='padding-top:3%;'>
-	<div id='img1".$i."' class='icon_butn' style='position:absolute;top:15%;right:3%;'></div>
-	<div id='img2".$i."' class='icon_butn' style='position:absolute;top:42%;right:3%;'></div>
-	<div id='img3".$i."' class='icon_butn' style='position:absolute;top:68%;right:3%;'></div>
-</div>
-
+	
 <input type='text' id='changeroom".$i."' name='roomname".$i."' placeholder='".$room[$i]."' style='border: 2px solid #ccc;padding: 6px;margin:0px 20px 10px;' >
+<div class='imagess' style='padding-top:3%;'>
+	<div id='roomimg".$i."' class='icon_butn' style='right:3%;'></div>
+</div>
 	<div class='icon-btn'>
-<div class='dropbtn' id='icon-btn1".$i."' style='right:147px;'><img src='img/imageson/".substr($stat->$p16,2)."-on.png' alt='".substr($stat->$p16,2)."'></div>
+<div class='dropbtn' id='icon-btn1".$i."' style='right:147px;'><img src='img/on/".substr($stat->$p16,2).".png' alt='".substr($stat->$p16,2)."'></div>
 <div id='iconlist1".$i."' class='dropdown-content togglehide' style='right:135px;' >
-    <img src='img/imageson/A-on.png'>
-	<img src='img/imageson/B-on.png'>
-	<img src='img/imageson/C-on.png'>
-	<img src='img/imageson/D-on.png'>
-	<img src='img/imageson/E-on.png'>
+    <img src='img/on/A.png'>
+	<img src='img/on/B.png'>
+	<img src='img/on/C.png'>
+	<img src='img/on/D.png'>
+	<img src='img/on/E.png'>
 	</div>
 	<div class='icon-btn'>
-<div class='dropbtn' id='icon-btn2".$i."' style='right:79px;'><img src='img/imageson/".substr($stat->$p5,2)."-on.png' alt='".substr($stat->$p5,2)."'></div>
+<div class='dropbtn' id='icon-btn2".$i."' style='right:79px;'><img src='img/on/".substr($stat->$p5,2).".png' alt='".substr($stat->$p5,2)."'></div>
 <div id='iconlist2".$i."' class='dropdown-content togglehide' style='right:50px;' >
-    <img src='img/imageson/A-on.png'>
-	<img src='img/imageson/B-on.png'>
-	<img src='img/imageson/C-on.png'>
-	<img src='img/imageson/D-on.png'>
-	<img src='img/imageson/E-on.png'>
+    <img src='img/on/A.png'>
+	<img src='img/on/B.png'>
+	<img src='img/on/C.png'>
+	<img src='img/on/D.png'>
+	<img src='img/on/E.png'>
 	</div>
 	<div class='icon-btn'>
-<div class='dropbtn' id='icon-btn3".$i."' style='right:9px;'><img src='img/imageson/".substr($stat->$p4,2)."-on.png' alt='".substr($stat->$p4,2)."'></div>
+<div class='dropbtn' id='icon-btn3".$i."' style='right:9px;'><img src='img/on/".substr($stat->$p4,2).".png' alt='".substr($stat->$p4,2)."'></div>
 <div id='iconlist3".$i."' class='dropdown-content togglehide' style='right:0px;' >
-   <img src='img/imageson/A-on.png'>
-	<img src='img/imageson/B-on.png'>
-	<img src='img/imageson/C-on.png'>
-	<img src='img/imageson/D-on.png'>
-	<img src='img/imageson/E-on.png'>
+   <img src='img/on/A.png'>
+	<img src='img/on/B.png'>
+	<img src='img/on/C.png'>
+	<img src='img/on/D.png'>
+	<img src='img/on/E.png'>
 	</div>
 	<div class='icon-btn'>
-<div class='dropbtn' id='icon-btn4".$i."' style='left:3px;'><img src='img/imageson/".substr($stat->$p0,2)."-on.png' alt='".substr($stat->$p0,2)."'></div>
+<div class='dropbtn' id='icon-btn4".$i."' style='left:3px;'><img src='img/on/".substr($stat->$p0,2).".png' alt='".substr($stat->$p0,2)."'></div>
 <div id='iconlist4".$i."' class='dropdown-content togglehide' style='right:-50px;' >
-    <img src='img/imageson/A-on.png'>
-	<img src='img/imageson/B-on.png'>
-	<img src='img/imageson/C-on.png'>
-	<img src='img/imageson/D-on.png'>
-	<img src='img/imageson/E-on.png'>
+    <img src='img/on/A.png'>
+	<img src='img/on/B.png'>
+	<img src='img/on/C.png'>
+	<img src='img/on/D.png'>
+	<img src='img/on/E.png'>
 	</div></div></div></div></div>
 ";
 for($j=1;$j<=4;$j++){
 	$scrpt[$i]=$scrpt[$i]."
-	$('#img".$j.$i."').click(function(){
+	$('#roomimg".$i."').click(function(){
 		$('#gallery').addClass('from_btn".$j.$i."');
 		$('#gallery').show();
 	});
@@ -576,6 +623,9 @@ $t1=date_timestamp_get(date_create(date('D M d, Y h:i:s A')))-date_timestamp_get
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
  
 <style>
+.dialimage{
+	width:65px;
+}
 .icon_butn{
 	background:url("img/images.jpg") center top no-repeat scroll;
 	width: 48px;
@@ -826,13 +876,13 @@ $('.settings_panel').toggleClass('togglehide');
 		 $(":input[value=''][value!='.']").attr('disabled', true);
 		// alert(k);
 		 if($(k).val()==""){
-			 
+			 alert($(k).attr("placeholder"));
 		 }
 		for(var j=1,nm="",al="";j<=4;j++){
 			k='#icon-btn'+j;
 			k+=i+' img';
 			nm=$(k).attr('src');
-			nm = nm.substring(nm.lastIndexOf("/")+1,nm.lastIndexOf("-on.pn"));
+			nm = nm.substring(nm.lastIndexOf("/")+1,nm.lastIndexOf(".png"));
 			al=$(k).attr('alt');
 			if(!(al==nm)){
 	  //$('<input>').attr('type', 'hidden').attr('name', i+','+j).attr('value', nm).appendTo('#setform');
@@ -841,7 +891,7 @@ $('.settings_panel').toggleClass('togglehide');
 		}
 		arr.push(temp);
 	}
-	alert(arr.toString());
+	//alert(arr.toString());
 	 $('<input>').attr('type', 'hidden').attr('name', 'settings').attr('value', arr.toString()).appendTo('#setform');
 	 //$(':input[value="k"]').attr('disabled', true);
 	 //alert(k);
@@ -1045,7 +1095,6 @@ if(count($forms)>0){
 	}
 }
 ?>
-</script */>
 <button id="savebtn" type="submit" style='display: block;color: red;border: 2px;'>Save</button>
 <button style='display: block;color: red;border: 2px;position:absolute;right:10px;bottom:5px;'>Cancel</button>
     </form></div>
