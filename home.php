@@ -94,15 +94,7 @@ $ids[$i]=substr($inf->id,0,3);
 $room[$i]=substr($inf->id,4,strlen($inf->id)-4);
 } */
 //__________________________________________________________________________________________________
-$renew=0;
-if(isset($_POST['roomname'])){ //check if form was submitted
-  $input = $_POST['roomname']; //get input text
-  echo $input;
-  else{
-	$renew=1;
-	echo "<script> alert('You Have Reahed Max Free Call/Month Limit');</script>";
-}
-}    
+$renew=0;   
 if(isset($_POST['id']) && isset($_POST['pin']) && isset($_POST['toggle'])){
   $deviceId = $_POST['id'];
   $gpioPin = $_POST['pin'];
