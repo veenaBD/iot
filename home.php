@@ -24,76 +24,6 @@ $userId=15;
 $filename='8bb96db453a58019d25531f97e9d34a5aa2f04d8b9b77ef9ef8116c363f85a31.json';
 //$filename='sample.json';
 date_default_timezone_set("Asia/Kolkata");
-
-//$json_file = file_get_contents($filename);
-//$stats = json_decode($json_file);
-/* 
-if(isset($_POST['id'])){
-	echo "<br> hello ".$_POST['id'];
-} */
-
-//$data11 = json_decode(file_get_contents("php://input"));
-  //print_r($data);
-/*  $data = array();
-    if(isset($_POST['settings'])) {
-        $data[] = $username.' entered:' . $_POST['settings'];
-        exit(json_encode($data));       
-    } */
- //echo file_get_contents("php://input");
-
-//__________________________________________________________________________________________________
-
-/* $postinfo="{
- 'userid': 15,
-  'info': [
-    {
-      'changed': '0',
-      'id': 'icon}kitchen room',
-      'pin05': 'lamp',
-      'pin04': 'tube'
-    },
-    {
-      'changed': '2',
-      'id': 'dining Room'
-    }
-  ]
-}
-"; */
-/* $postinfo = file_get_contents("post.json");
-$data11 = json_decode($postinfo);
-echo $data11->userid;
-	$usrId= $data11->userid;
-$db_file = file_get_contents("db.json");
-$data = json_decode($db_file);
-$filenm="";
-foreach ($data->login as $i => $values) {
-	if($values->id == $usrId)
-		$filenm=$values->filename;
-}  
-echo $filenm; // $jsonfile = file_get_contents($filenm);//$data12 = json_decode($json_file);
- foreach ($data11->info as $i => $inf) { 
-  if($i==$inf->changed){
-	  echo $inf[1];
-  }
- }
- *//*  
-foreach ($data11->info as $i => $inf) { 
-	if(substr($inf->id,0,3) == $deviceId){
-		$n='pin'.$gpioPin;
-		//echo $stat->$n.strlen($stat->$n);
-		$inf->$n=$toggle.substr($inf->$n,1,strlen($inf->$n)-1);
-	}
-}
-
-$json = json_encode($data11, JSON_PRETTY_PRINT);
-file_put_contents($filenm, $json);  */
-
-/*
-foreach ($data11->info as $i => $inf) {
-$ids[$i]=substr($inf->id,0,3);
-$room[$i]=substr($inf->id,4,strlen($inf->id)-4);
-} */
-//__________________________________________________________________________________________________
 $renew=0;   
 if(isset($_POST['id']) && isset($_POST['pin']) && isset($_POST['toggle'])){
   $deviceId = $_POST['id'];
@@ -138,7 +68,7 @@ if(isset($_POST['settings'])){
 $chng=$_POST['settings'];
 $chng.=",";
 $chngcomma=substr_count($chng,",");
-echo $chng." => ".$chngcomma ."<br>";
+//echo $chng." => ".$chngcomma ."<br>";
 $json_file = file_get_contents($filename);//
 $stats = json_decode($json_file);
 
@@ -297,7 +227,7 @@ $dialer[$i]="
 //btns will show the total no of devices at the top of the page
 $btns[$i]="
 <div  id='show".$i."' class='desc' data-toggle='tooltip' data-placement='bottom' data-original-title='". showtooltip($prev)."' style='top:10%; left:".(18*($i+1))."%;'>
-           <div class='item'>
+           <div class='item rotator'>
                 <img src='img/image".($i+2).".png'>
                 <div class='item_content'>
                     <h2>".$room[$i]."</h2><!-- $room[$i] will give us the romm name wher the device is installed -->
@@ -350,61 +280,11 @@ $display[$i]="
 	});";
 		
 	}
-/*	"
-	 
-	 $('#icon-btn2".$i."').click(function(){
-		 $('#iconlist2".$i."').toggleClass('togglehide');//alert('testing');
-	});
-	 $('#icon-btn3".$i."').click(function(){
-		 $('#iconlist3".$i."').toggleClass('togglehide');//alert('testing');
-	});
-	 $('#icon-btn4".$i."').click(function(){
-		 $('#iconlist4".$i."').toggleClass('togglehide');//alert('testing');
-	});
-	$('.dropdown-content1 img').click(function(){
-		var icn=$(this).attr('src')
-		//alert(icn);
-		var icon-btn='#icon-btn'+($(this).parent().attr('id').substring(8)) + ' img';
-		//alert(icon-btn);
-		$(icon-btn).attr('src',icn);
-		
-	});
-	$('.dropdown-content2 img').click(function(){
-		var icn=$(this).attr('src')
-		//alert(icn);
-		var icon-btn='#icon-btn'+($(this).parent().attr('id').substring(8)) + ' img';
-		//alert(icon-btn);
-		$(icon-btn).attr('src',icn);
-		
-	});
-	$('.dropdown-content3 img').click(function(){
-		var icn=$(this).attr('src')
-		//alert(icn);
-		var icon-btn='#icon-btn'+($(this).parent().attr('id').substring(8)) + ' img';
-		//alert(icon-btn);
-		$(icon-btn).attr('src',icn);
-		
-	});
-	$('.dropdown-content4 img').click(function(){
-		var icn=$(this).attr('src')
-		//alert(icn);
-		var icon-btn='#icon-btn'+($(this).parent().attr('id').substring(8)) + ' img';
-		//alert(icon-btn);
-		$(icon-btn).attr('src',icn);
-		
-	});";*/
-//Customising te room naem and button name form; initially it shoud be hidden
-//Change <imput>placeholder will show the current name like room21/ study room
-//There will be arrow link; if you click it will slide down and show the 4 button name input fieldset
-//similar to roo  name there alse be ->>> change <input> in beetween place holder vwill show the current button name like lap fan
-// in the right side there will be a default icon shown, if u click the icon it will show the collection of icon 
-//from there hr can choose the appropriate icon
- 
 
 $forms[$i]="
 <!--	<h3 style='padding: 0px 10px;left:13px;position: relative;display: inline-block;'>Room Name:</h3>-->
 	
-<input type='text' id='changeroom".$i."' name='roomname".$i."' placeholder='".$room[$i]."' style='border: 2px solid #ccc;padding: 6px;margin:0px 20px 10px;' >
+<input type='text' id='changeroom".$i."' name='roomname".$i."' placeholder='".$room[$i]."' style='border: 2px solid #ccc;padding: 6px;margin:0px 0px 10px 20px;width:210px;' >
 <div class='imagess' style='padding-top:3%;'>
 	<div id='roomimg".$i."' class='icon_butn' style='right:3%;'></div>
 </div>
@@ -443,7 +323,7 @@ $forms[$i]="
 	<img src='img/on/C.png'>
 	<img src='img/on/D.png'>
 	<img src='img/on/E.png'>
-	</div></div></div></div></div>
+	</div></div></div></div></div><hr>
 ";
 for($j=1;$j<=4;$j++){
 	$scrpt[$i]=$scrpt[$i]."
@@ -453,88 +333,8 @@ for($j=1;$j<=4;$j++){
 	});
 ";	
 }
-
-/*
-$('.gallery').click(function(e){
-	var offset = $(this).offset();
-  var relativeX = (e.pageX - offset.left);
-  var relativeY = (e.pageY - offset.top);
-  var res=48;
-  var posx='-'+Math.round(relativeX/res)*48+'px';
-  var posy='-'+Math.round(relativeY/res)*48+'px';
-  alert(posx+'\n'+posy);
-  
-   $('#myDropdown').hide();  
-  $('.icongallery').css({'background-position-x': posx, 'background-position-y': posy});//.background-position();
-});
-";*/
-/*     $scrpt[$i]="
-    $('#show" .$i."').click(function(){//alert('from php code');
-   ";
-	$size=count($stats->status);
-	for($j=0;$j<$size;$j++){
-	If($t1<120)
-	($i!=$j)?$scrpt[$i]=$scrpt[$i]."$('#dialer" .$j."').addClass('togglehide');$('#dialer" .$j."').removeClass('open');":$scrpt[$i]=$scrpt[$i]."$('#dialer" .$i."').removeClass('togglehide').delay(300);setTimeout(function() {toggleOptions($('#dialer" .$i."'));}, 100);";
-   else	   	
-	($i!=$j)?$scrpt[$i]=$scrpt[$i]."$('#dialer" .$j."').addClass('togglehide');$('#dialer" .$j."').removeClass('open');":$scrpt[$i]=$scrpt[$i]."$('#blur').show();$('#room".$i."').slideDown(300); setTimeout(function(){ $('#room".$i."').fadeOut(500); $('#blur').fadeOut(100);$('#blur').append('from php code');}, 5000);";
-   
-}
-    $scrpt[$i]=$scrpt[$i]."
-    });
-   "; */
-/*   $update="
-   setInterval(function() {$.post( 'prevtime.php', { id : '".$userId."' }, function(data) {".
-   $updt = json_decode('data');	
-."
-   alert(data);
-       $('#show0').attr('data-original-title', data); 
-
-//   window.location.href = 'ask.php';
-});}, 10000);"; */
-   /*
-		BootstrapDialog.show({
-            title: '".$room[$i]." Offline',
-			message: '<img src=img/image2.png>Device is not Active'
-        });
-		 setTimeout(function(){ dialogRef.close();}, 5000);
-		*/
-  
-/*   
-if(isset($_POST['id'])){
-	if($ids[$i] !=  $deviceId){
-	$css[$i]="#dialer".$i." {
-	display:none;
-}
-";
-	} 
-}
-else{
-$css[$i]="#dialer".$i." {
-	display:none;
-}
-";
-}*/
 //end of dynamic web page
 }
-
-/*
-sleep(3);
-echo $_SERVER['PHP_SELF'];
-$host = "localhost";
-$path = "/email/home.php";//$_SERVER['PHP_SELF'];//
-$data = "re=11";
-$data = urlencode($data);
-
-header("POST ".$path." HTTP/1.1\r\n");
-header("Host: ".$host."\r\n");
-header("Content-type: application/x-www-form-urlencoded\r\n");
-header("Content-length: " . strlen($data) . "\r\n");
-header("Content: " . $data . "\r\n");
-//header("Connection: close\r\n\r\n");
-*/
-//$reload=0;
-// $reload?$reload=0:$reload=1;
-//header("refresh: 10;");
 
 
 function showtooltip($prev) {
@@ -676,7 +476,7 @@ box-shadow: 50px 49px 28px -14px rgba(0,0,0,0.66);
 	text-align:center;
 }
 
-.settings_btn img {
+/*.settings_btn img {
 position:absolute;
 right:3%;
 top:3%;
@@ -685,7 +485,7 @@ top:3%;
 	position:absolute;
 	right:11%;
 	top:2%;
-}
+}*/
 .settings_panel {
     position:absolute;
 	left: 31%;
@@ -693,8 +493,7 @@ top:3%;
 	background-color: #f9f9f9;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	opacity: 1;
-    filter: alpha(opacity=50);
-	width:20%;
+    width:25%;
 }
 .icongallery{
 	display: none;
@@ -703,9 +502,6 @@ top:3%;
 	top: 23%;
 	background-color: #f9f9f9;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	opacity: 0.5;
-    filter: alpha(opacity=50); 
-
 }
 .icongallery img{
 	color: black;
@@ -764,15 +560,15 @@ padding: 16px 0px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-	width: 48px;
-	height: 48px;
+	width: 40px;
+	height: 40px;
 	display: inline-block;
-	margin: 0px 5px;
+	margin: 0px -5px;
 	top:50px;
 }
 .dropbtn img {
-	width: 48px;
-	height:48px;
+	width: 35px;
+	height:35px;
 }
 .dropbtn:hover, .dropbtn:focus {
     background-color: #3e8e41;
@@ -785,13 +581,13 @@ padding: 16px 0px;
 
 .dropdown-content {
     position: absolute;
-	top:75px;
+	top:40px;
+	width:40px;
     background-color: #f9f9f9;
-    min-width: 100px;
     overflow: auto;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	max-height: 200px;
 	z-index: 99;
+	left:18px;
 }
 
 .dropdown-content a {
@@ -802,9 +598,395 @@ padding: 16px 0px;
 	
 }
 .dropdown-content img{
-	width:60px;
-	height:60px;
+	width:40px;
+	height:40px;
 }
+.navbar navbar-inverse{
+ 	width:100%;
+ }
+ 	.container-fluid{
+ 		background-color: #00004D;
+ 		color:white;
+ 	}
+
+
+ 	* {
+    box-sizing: border-box;
+}
+
+/* code written by VEda*/
+.navbar navbar-inverse{
+ 	width:100%;
+ }
+ 	.container-fluid{
+ 		background-color: #00004D;
+ 		color:white;
+ 	}
+
+
+ 	* {
+    box-sizing: border-box;
+}
+
+.menubar {
+    /*display: inline-block;*/
+    cursor: pointer;
+    position: absolute;
+    left:95%;
+    top:1.5%;
+
+}
+
+.bar1, .bar2, .bar3 {
+    width: 35px;
+    height: 5px;
+    background-color:white;
+    margin: 6px 0;
+    transition: 0.4s;
+}
+
+.change .bar1 {
+    -webkit-transform: rotate(-20deg) translate(-5px, 8px) ;
+    transform: rotate(-20deg) translate(-10px, 6px) ;
+}
+
+.change .bar2 {opacity: 0;}
+
+.change .bar3 {
+    -webkit-transform: rotate(25deg) translate(-18px, -8px) ;
+    transform: rotate(25deg) translate(-14px, -8px) ;
+}
+
+.change + #menu {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* menu appearance*/
+#menu {
+  position: fixed;
+  color: #999;
+  width: 100px;
+  top:10%;
+  left:92%;
+  padding: 10px;
+  margin: auto;
+  font-family: "Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif;
+  text-align: center;
+  border-radius: 4px;
+  background: white;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+  /* just for this demo */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .4s;
+}
+#menu:after {
+  position: absolute;
+  top: -20px;
+  left: 35px;
+  content: "";
+  display: block;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 20px solid white;
+}
+ul, li, li a {
+  list-style: none;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+li a {
+  padding: 5px;
+  color: #888;
+  text-decoration: none;
+  transition: all .2s;
+}
+#settings_btn:hover,
+#settings_btn:focus {
+  background: #1ABC9C;
+  color: #fff;
+}
+
+#logout_btn:hover,
+#logout_btn:focus {
+  background: #1ABC9C;
+  color: #fff;
+}
+p, p a { font-size: 12px;text-align: center; color: #888; }
+
+@media screen and (min-width: 360px) and (orientation: portrait) and (min-height: 640px){
+	/*header start*/
+.menubar {
+    /*display: inline-block;*/
+    cursor: pointer;
+    position: absolute;
+    left:86%;
+    top:1.5%;
+
+}
+
+.bar1, .bar2, .bar3 {
+    width: 85px;
+    height: 20px;
+    background-color: white;
+    margin: 6px 0;
+    transition: 0.4s;
+}
+
+.change .bar1 {
+    -webkit-transform: rotate(-37deg) translate(-5px, 8px) ;
+    transform: rotate(-37deg) translate(-30px, 6px) ;
+}
+
+.change .bar2 {opacity: 0;}
+
+.change .bar3 {
+    -webkit-transform: rotate(37deg) translate(-8px, -8px) ;
+    transform: rotate(37deg) translate(-38px, -8px) ;
+}
+
+.change + #menu {
+  opacity: 1;
+  visibility: visible;
+}
+
+
+	.navbar navbar-inverse{
+ 	width:100%;
+ }
+.container-fluid{
+	width:101.6%;
+	height: 150px;
+	/*position: absolute;*/
+    white-space: nowrap;
+    overflow: hidden;
+}
+.navbar-brand{
+	color:white;
+	font-size: 50px;
+	margin-top:40px;
+}
+#menu{
+		position: absolute;
+		width:250px;
+  		right:-2%;
+  		top: 50%;
+		height:250px;
+		margin-bottom: 10.5em;
+  		color: #999;
+  		padding: 10px;
+  		margin: auto;
+  		font-family: "Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif;
+  		text-align: center;
+  		border-radius: 4px;
+  		background: white;
+ 		box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+  /* just for this demo */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .4s;
+
+		
+	}
+	#menu img{
+		width:47px;
+		margin-top:10px;
+	}
+	#menu h3{
+		font-size: 45px;
+		margin-top:10px;
+	}
+	#menu:after {
+  position: absolute;
+  top: -20px;
+  left: 107px;
+  content: "";
+  display: block;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 20px solid white;
+}
+
+/*menu end*/
+
+.popup{
+	left: 20%;
+	top:30%;
+	width:60%;
+	height: 50%;
+position: absolute;
+/*border-radius: 10px;
+border: 10px solid #000000;
+box-shadow: 50px 49px 28px -14px rgba(0,0,0,0.66);*/
+
+}
+
+}
+/* done by Veda*/
+
+/* anjana added these*/
+
+body {
+background-color:skyblue;
+/*margin-top:30px;	*/
+}
+
+
+#savebtn {
+display: block;
+    color: white;
+    border: 2px;
+    font-size: 15px;
+    position: absolute;
+    left: 15px;
+ 
+}
+#cancelbtn {
+display: block;
+color: white;
+border: 2px;
+position:absolute;
+right:10px;
+font-size:15px;
+}
+.block {
+	margin:20px 0px 40px,0px;
+}
+
+.roombtn {
+	
+	position: absolute;
+    width: 100%;
+    	
+}
+.icon-btn {
+    position: relative;
+    display: inline-block;
+    padding-left: 23px;
+	
+}
+.icon_butn {
+	margin-top:-12px;
+}
+.imagess {
+float: right;
+margin-right: 40px;
+width:32px;
+}
+
+@media only screen and (max-width: 360px) {
+	.dropdown-content {
+	left: 17px;
+	top:45px;
+}
+	.item {
+		width: 50px;
+    height: 50px;
+    top: 85px;
+	left: 15px;
+	}
+	.item img {
+		width:40px;
+	}
+
+#savebtn { 
+font-size:18px;
+left: -40%;
+}
+
+#cancelbtn {
+font-size:18px;	
+}
+.block {
+	margin-top: 136px;
+    margin-bottom: 10px;
+}
+
+.settings_panel {
+    position: absolute;
+    left: 7%;
+    top: 37%;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    opacity: 1;
+    filter: alpha(opacity=50);
+    width: 85%;
+    height:60%;
+	
+}
+
+.h2, h2 {
+font-size: 20px;	
+margin-top:10px;
+}
+
+.dropbtn {
+    color: white;
+    padding: 2px;
+    font-size: 16px;
+    width: 42px;
+    height: 45px;
+    display: inline-block;
+    /* margin: 0px 5px; */
+    /* top: 69px; */
+    margin-left: 16px;
+    margin-top: 0px;
+	margin-bottom:12px;
+}
+
+.dropbtn img {
+    width: 40px;
+    height: 40px;
+}
+
+.icon-btn {
+    padding-left: 0px;
+}
+
+}
+
+@media screen and (max-width: 640px) and (orientation : landscape) {
+	
+	.settings_panel {
+		left: 28%;
+		top: 55%;
+		width: 60%;
+		height:110%;
+		
+	}
+	.h2, h2 {
+font-size: 25px;	
+	}
+.dropbtn  {	
+margin-left: 13px;
+margin-bottom: 10px;
+}	
+
+.item {
+		width: 50px;
+    height: 50px;
+    top: 55px;
+	left: 70px;
+	}
+	.item img {
+		width:45px;
+	}
+	.icon-btn {
+    padding-left: 5px;
+}
+.imagess {
+    margin-top: -40%;
+    float: right;
+    margin-right: 50px;
+}
+.icon_butn {
+    margin-top: 125px;
+}
+}
+
+/*^^ done by anjana*/
 
 
 </style>
@@ -833,8 +1015,9 @@ $(document).ready(function(){
 //var dial; 
  $('[data-toggle="tooltip"]').tooltip();   
  $('.alertbox').click(function(){$('.alertbox').hide();$('.popup').hide();});
- 
- $('.settings_btn').click(function(){
+  
+$('.menubar').click(function() {    $('.menubar').toggleClass('change');});
+ $('#settings_btn').click(function(){
 	if($('.settings_panel').hasClass('togglehide')){
 	//update the settings field
 	$.post( 'update.php', { settings : <?php echo $userId; ?> }, function(data) { 	//alert("dhgd ff "+data);
@@ -957,13 +1140,6 @@ if(myClass.indexOf("from_btn")>0)  {
 });
 });
 
-/* 
-$(document).ready(function(){
-	$('[data-toggle="tooltip"]').tooltip();   
-	$('.alertbox').click(function(){$('.alertbox').hide();$('.popup').hide();});
-
-
-}); */
 setInterval(function() {
 	updateall(function(result){
 		for(var i=0;i<result.length;i++){
@@ -983,75 +1159,34 @@ setInterval(function() {
 		}
 	});
 }, 120000);// try to understand
-/* setTimeout(function() { 
-  <?php
-  try{
-  if(count($scrpt)>0){
-	foreach($scrpt as $i =>$scripts){
-		echo $scripts;
-	}
-	
-  }
-  } catch (Exception $e) {
-	 // echo '//Caught exception: ',  $e->getMessage(), "\n";904629735
-  }
- ?>
-  }, 100); */
-/* setInterval(function() {$.post( 'update.php', { id : <?php echo $userId; ?> }, function(data) {
-	var result = JSON.parse(data);
-	//alert("time now "+new Date($.now()));
-	//alert(data);
-	//var time=[];
-    for(var i=0; i<result.length; i++) {
-		$("#show" + i).attr('data-original-title', result[i].substr(28)+":)"); 
-		$("#prev" + i).text(" -> "+ result[i].substring(0,28)+":)"); 
-	}	
-
-	
-$('.desc').click(function(){
-		i=$(this).attr('id').substr(4);
-		$('#blur').text(i);// var val=time[i];
-		var prev=Math.round((new Date()- new Date(result[i].substring(0,28)))/1000);
-		//alert(i+"\n"+prev);//alert(new Date(val.substring(0,28)) +"\n" +(new Date()- new Date(val.substring(0,28)))+"\n" +prev); 
-	for(var j=0;j<result.length;j++){
-		if(i!=j){
-			$('#blur').append("hide evrything");
-			$("#dialer" +j).addClass('togglehide');
-			$("#dialer" +j).removeClass('open');
-			$(".popup").hide();// alert("others");
-		}else{
-			if(prev<120){
-				$('#blur').append(" -"+prev);	//alert("online");
-				$(".popup").hide();
-				$("#blur").hide();//alert("online");
-				$("#dialer"+i).removeClass('togglehide').delay(300);
-				setTimeout(function(){
-					toggleOptions($("#dialer"+i));
-					}, 100);
-				
-			}else{
-				$('#blur').append(" +"+prev);
-				$('#blur').show();
-				$("#room"+j).slideDown(500);
-				setTimeout(function(){
-					$("#room" +j).fadeOut(500);
-					$('#blur').fadeOut(100);
-					}, 5000);//alert("offline");
-			}
-		}
-	}
-});
-	
-});}, 20000); */
-/*$(document).ready(function(){
-    $(".imagess").click(function(){
-        $(".box").show();
-    });
-});*/
- </script>
+</script>
 </head>
 
 <body style="background-color:skyblue;">
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      
+      <a class="navbar-brand" href="#">Home Automation</a>
+      <div class="menubar">
+  <div class="bar1"></div>
+  <div class="bar2"></div>
+  <div class="bar3"></div>
+</div>
+
+<div id="menu" style="margin: 25px 25px 0px 0px;z-index:99;">
+  <ul>
+    <li id="settings_btn"><img src="img/settings.ico" alt="Settings"><h3>Settings</h3></a></li>
+    <li id="logout_btn"
+     		onclick="return confirm('Are you sure,you want to Logout?');">
+     		<img  src="img/image8.png" alt="Logout"><h3>Logout</h3></a>
+    </li>
+    
+  </ul>
+</div>
+    </div>
+  </div>
+</nav>
 <?php
 echo "<div class='roombtn' style='position:absolute; width: 100%;'>";
 if(count($btns)>0){
@@ -1082,19 +1217,19 @@ if(count($form)>0){
 }
 echo "</form></div>"; */
 ?>
-<div class="settings_btn" style="padding-top:3%;"><img src="img/settings.ico" alt="Settings">
-</div>
+<!--<div class="settings_btn" style="padding-top:3%;"><img src="img/settings.ico" alt="Settings">
+</div>-->
 <!--<div class="dropbtn"></div>
 <div class="dropbtn"></div>
 <div class="dropbtn"></div>-->
- <div class="logout_btn"><a href="index.php" style="color:white;" onclick="return confirm('Are you sure, you want to Logout?');">
- <img  src="img/image8.png" alt="Logout"></a></div>
+ <!--<div ><a href="index.php" style="color:white;" onclick="return confirm('Are you sure, you want to Logout?');">
+ <img  src="img/image8.png" alt="Logout"></a></div>-->
  
 
  <div id="settings" class="settings_panel togglehide">
 	<div style="text-align:center;"><h2>Settings</h2></div>
-   <div style="padding: 10px;">
-   <form  id="setform" method="post" action="home.php">
+   
+   <form id="setform" method="post" action="home.php"><div style="padding: 10px 0px;overflow-y:auto;height:25em;">
 <?php 
 if(count($forms)>0){
 		foreach($forms as $i =>$frm){
@@ -1102,52 +1237,17 @@ if(count($forms)>0){
 	}
 }
 ?>
-<button id="savebtn" type="submit" style='display: block;color: red;border: 2px;'>Save</button>
-<button style='display: block;color: red;border: 2px;position:absolute;right:10px;bottom:5px;'>Cancel</button>
-    </form></div>
+	</div>
+	<div class="block">
+	<button class="btn btn-info" id="savebtn" type="submit">Save</button>
+	<button type="button" class="btn btn-info" id="cancelbtn">Cancel</button></div> </form>
   </div>
-  
-  
+    
  <div id="gallery" class="icongallery">
  <img src="img/images.jpg">
  </div>
-<script>
-/* When the user clicks on the button, 
-toggle between hiding and showing the dropdown content */
-/*function myFunction() {
-   // document.getElementById("myDropdown").classList.toggle("show");//this is plain java script use jquery instead
-	 $('#myDropdown').toggleClass('show');
-}*/
-/*$('.gallery').click(function(e){
-	var offset = $(this).offset();
-  var relativeX = (e.pageX - offset.left);
-  var relativeY = (e.pageY - offset.top);
-  var res=48;
-  var posx='-'+Math.round(relativeX/res)*48+'px';
-  var posy='-'+Math.round(relativeY/res)*48+'px';
-  alert(posx+'\n'+posy);
-  
-   $('#myDropdown').hide();  
-  $('.icongallery').css({'background-position-x': posx, 'background-position-y': posy});//.background-position();
-});*/
-// Close the dropdown if the user clicks outside of it
-/* window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
 
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
-}
- */
-</script>
-
-	<script type="text/javascript" src="switcher.js"></script>
+ <script type="text/javascript" src="switcher.js"></script>
 
 </body>
 </html>
