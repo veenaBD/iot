@@ -138,15 +138,26 @@ if(isset($_POST['settings'])){
 $chng=$_POST['settings'];
 $chng.=",";
 $chngcomma=substr_count($chng,",");
-//echo $chng." => ".$chngcomma ."<br>";
+echo $chng." => ".$chngcomma ."<br>";
 $json_file = file_get_contents($filename);//
 $stats = json_decode($json_file);
 
 foreach ($stats->status as $i => $stat) {
+	//$rnm='roomname'.$i;
+	if(isset($_POST['roomname'.$i])){
+		$roomnm=$_POST['roomname'.$i];
+		//echo $roomnm;
+		$stat->id=substr($stat->id,0,6).$roomnm;
+	}
+	
 for($k=0,$currentpos=0;$k<$chngcomma;$k++){
 //echo "<br>".$currentpos." next= ".$chng;
 	$pos = substr($chng,0,strpos($chng, ","));
 	//echo "<br>val= ".$pos;
+/*if(strpos($pos, "|")>0)
+	$posno=substr($pos,0,strpos($pos, "|"));
+
+if(strpos($pos, "|")>0)*/
 $posno=substr($pos,0,strpos($pos, "-"));
 //echo " i= ".$i." position " .$posno;
 if($i==$posno){
@@ -202,7 +213,7 @@ foreach ($stats->status as $i => $stat) {
 //$id1="device-id";
 //echo substr($stat->$id1,4,strlen($stat->$id1)-4);
 $ids[$i]=substr($stat->id,0,3);
-$room[$i]=substr($stat->id,4,strlen($stat->id)-4);
+$room[$i]=substr($stat->id,6,strlen($stat->id)-4);
 
 //echo "<br> ".$room[$i]." is ".$ids[$i];
 // write here
@@ -795,6 +806,7 @@ padding: 16px 0px;
 	height:60px;
 }
 
+
 </style>
 <script>
 function updateall(callback) {
@@ -864,13 +876,15 @@ $('.settings_panel').toggleClass('togglehide');
 	var arr=[];
 	for(var i=0,k="";i<<?php echo $size; ?>;i++){
 		 var temp= [];
-		 k="roomname"+i;
-		 $(":input[value=''][value!='.']").attr('disabled', true);
-		// alert(k);
+		 k="#changeroom"+i;
+		// $(":input[value=''][value!='.']").attr('disabled', true);
+		 //alert($(k).val());
 		 if($(k).val()==""){
-			 alert($(k).attr("placeholder"));
-		 }
-		for(var j=1,nm="",al="";j<=4;j++){
+			 //alert($(k).attr("placeholder"));
+			 $(k).attr('disabled', true);
+			 //temp.push("r"+i+"|"+$(k).val());
+		}
+		 for(var j=1,nm="",al="";j<=4;j++){
 			k='#icon-btn'+j;
 			k+=i+' img';
 			nm=$(k).attr('src');
@@ -881,7 +895,8 @@ $('.settings_panel').toggleClass('togglehide');
 				temp.push(i+"-"+j+nm);//alert(k+"\n"+res);
 			}
 		}
-		arr.push(temp);
+		if(temp.length !== 0)
+			arr.push(temp);
 	}
 	//alert(arr.toString());
 	 $('<input>').attr('type', 'hidden').attr('name', 'settings').attr('value', arr.toString()).appendTo('#setform');
