@@ -286,8 +286,9 @@ $forms[$i]="
 	
 <input type='text' id='changeroom".$i."' name='roomname".$i."' placeholder='".$room[$i]."' style='border: 2px solid #ccc;padding: 6px;margin:0px 0px 10px 20px;width:210px;' >
 <div class='imagess' style='padding-top:3%;'>
-	<div id='roomimg".$i."' class='icon_butn' style='right:3%;'></div>
+	<div id='roomimg".$i."' class='icon_butn'></div>
 </div>
+
 	<div class='icon-btn'>
 <div class='dropbtn' id='icon-btn1".$i."' style='right:147px;'><img src='img/on/".substr($stat->$p16,2).".png' alt='".substr($stat->$p16,2)."'></div>
 <div id='iconlist1".$i."' class='dropdown-content togglehide' style='right:135px;' >
@@ -328,10 +329,11 @@ $forms[$i]="
 for($j=1;$j<=4;$j++){
 	$scrpt[$i]=$scrpt[$i]."
 	$('#roomimg".$i."').click(function(){
-		$('#gallery').addClass('from_btn".$j.$i."');
+		$('#gallery').attr('alt','#roomimg".$i."')
 		$('#gallery').show();
 	});
-";	
+	";
+
 }
 //end of dynamic web page
 }
@@ -408,6 +410,8 @@ $t1=date_timestamp_get(date_create(date('D M d, Y h:i:s A')))-date_timestamp_get
 <html>
 <head>
 <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
 <title>Welcome Home <?php echo $username;?></title>
   <!--   <META HTTP-EQUIV="refresh" CONTENT="120">
  <php
@@ -418,8 +422,8 @@ $t1=date_timestamp_get(date_create(date('D M d, Y h:i:s A')))-date_timestamp_get
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https:////maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"> -->
 <link href="style1.css" rel="stylesheet">
-<!--<link href="style2.css" rel="stylesheet">-->
-<link rel="stylesheet" type="text/css" href="style.css">
+<!--<link href="style2.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="style.css">-->
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 <link href="http://quablu.in/QuasarEnterprises.png" rel="icon" type="image/x-icon" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -431,10 +435,10 @@ $t1=date_timestamp_get(date_create(date('D M d, Y h:i:s A')))-date_timestamp_get
 }
 .icon_butn{
 	background:url("img/images.jpg") center top no-repeat scroll;
-	width: 48px;
-height: 48px;
+	width: 84px;
+height: 84px;
 display: inline-block;
-margin: 0px 5px;
+margin: -9px -14px;
 
 	
 }
@@ -488,8 +492,8 @@ top:3%;
 }*/
 .settings_panel {
     position:absolute;
-	left: 31%;
-	top: 23%;
+	left: 40%;
+	top: 50%;
 	background-color: #f9f9f9;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	opacity: 1;
@@ -601,22 +605,13 @@ padding: 16px 0px;
 	width:40px;
 	height:40px;
 }
-.navbar navbar-inverse{
- 	width:100%;
- }
- 	.container-fluid{
- 		background-color: #00004D;
- 		color:white;
- 	}
 
-
- 	* {
-    box-sizing: border-box;
-}
 
 /* code written by VEda*/
-.navbar navbar-inverse{
+.navbar-inverse{
  	width:100%;
+	position:fixed;
+	z-index:99;
  }
  	.container-fluid{
  		background-color: #00004D;
@@ -624,9 +619,7 @@ padding: 16px 0px;
  	}
 
 
- 	* {
-    box-sizing: border-box;
-}
+ 	
 
 .menubar {
     /*display: inline-block;*/
@@ -647,14 +640,14 @@ padding: 16px 0px;
 
 .change .bar1 {
     -webkit-transform: rotate(-20deg) translate(-5px, 8px) ;
-    transform: rotate(-20deg) translate(-10px, 6px) ;
+    transform: rotate(-36deg) translate(-9px, 7px);
 }
 
 .change .bar2 {opacity: 0;}
 
 .change .bar3 {
     -webkit-transform: rotate(25deg) translate(-18px, -8px) ;
-    transform: rotate(25deg) translate(-14px, -8px) ;
+    transform: rotate(36deg) translate(-9px, -8px);
 }
 
 .change + #menu {
@@ -723,13 +716,13 @@ p, p a { font-size: 12px;text-align: center; color: #888; }
     cursor: pointer;
     position: absolute;
     left:86%;
-    top:1.5%;
+    top:25%;
 
 }
 
 .bar1, .bar2, .bar3 {
-    width: 85px;
-    height: 20px;
+    width: 40px;
+    height: 5px;
     background-color: white;
     margin: 6px 0;
     transition: 0.4s;
@@ -758,14 +751,13 @@ p, p a { font-size: 12px;text-align: center; color: #888; }
  }
 .container-fluid{
 	width:101.6%;
-	height: 150px;
-	/*position: absolute;*/
+	position: absolute;
     white-space: nowrap;
     overflow: hidden;
 }
 .navbar-brand{
 	color:white;
-	font-size: 50px;
+	font-size: 30px;
 	margin-top:40px;
 }
 #menu{
@@ -852,7 +844,7 @@ right:10px;
 font-size:15px;
 }
 .block {
-	margin:20px 0px 40px,0px;
+	margin:20px 0px 60px 0px;
 }
 
 .roombtn {
@@ -867,9 +859,6 @@ font-size:15px;
     padding-left: 23px;
 	
 }
-.icon_butn {
-	margin-top:-12px;
-}
 .imagess {
 float: right;
 margin-right: 40px;
@@ -877,6 +866,25 @@ width:32px;
 }
 
 @media only screen and (max-width: 360px) {
+	
+	.navbar-brand{
+	color:white;
+	font-size:25px;
+	margin-top:2px;
+}
+
+.menubar {
+    /* display: inline-block; */
+    cursor: pointer;
+    position: absolute;
+    left: 86%;
+    top: 10%;
+}
+.container-fluid {
+	
+	height:50px;
+}
+
 	.dropdown-content {
 	left: 17px;
 	top:45px;
@@ -944,7 +952,9 @@ margin-top:10px;
 .icon-btn {
     padding-left: 0px;
 }
-
+#menu {
+	
+}
 }
 
 @media screen and (max-width: 640px) and (orientation : landscape) {
@@ -1117,7 +1127,10 @@ $('.settings_panel').toggleClass('togglehide');
         alert("Response Data" +data); //Log the server response to console
       });//alert("Does this alert appear first or second?");  */
  });
-
+$('#cancelbtn').click(function(){
+	$('.settings_panel').toggleClass('togglehide');
+	
+});
  $('.icongallery').click(function(e){
 	var offset = $(this).offset();
   var relativeX = (e.pageX - offset.left);
@@ -1125,10 +1138,13 @@ $('.settings_panel').toggleClass('togglehide');
   var res=48;
   var posx='-'+Math.round(relativeX/res)*48+'px';
   var posy='-'+Math.round(relativeY/res)*48+'px';//  alert(posx+'\n'+posy);
-  // get the claassnmae from that we can know whhere we have clicked it
+  // get the alt value so that we can know from where we have clicked it
    
-  var myClass = $(this).attr("class");//   alert(myClass); icongallery from_btn40
-if(myClass.indexOf("from_btn")>0)  {
+  var myClass = $(this).attr("alt");//   alert(myClass); icongallery from_btn40
+$('.icongallery').hide();  
+  $(myClass).css({'background-position-x': posx, 'background-position-y': posy});//.background-position();
+ 
+/*  if(myClass.indexOf("from_btn")>0)  {
 	var btn=myClass.substr(myClass.indexOf("from_btn")+8,1);
 	var room=myClass.substr(myClass.indexOf("from_btn")+9,1);
     var selct="#img" + btn+room;// alert(selct);
@@ -1136,7 +1152,7 @@ if(myClass.indexOf("from_btn")>0)  {
   $(selct).css({'background-position-x': posx, 'background-position-y': posy});//.background-position();
  selct="from_btn" + btn+room;// alert(selct);
  $(this).removeClass(selct);
-}//else alert(myClass.indexOf("from_btn"));
+} *///else alert(myClass.indexOf("from_btn"));
 });
 });
 
@@ -1217,14 +1233,6 @@ if(count($form)>0){
 }
 echo "</form></div>"; */
 ?>
-<!--<div class="settings_btn" style="padding-top:3%;"><img src="img/settings.ico" alt="Settings">
-</div>-->
-<!--<div class="dropbtn"></div>
-<div class="dropbtn"></div>
-<div class="dropbtn"></div>-->
- <!--<div ><a href="index.php" style="color:white;" onclick="return confirm('Are you sure, you want to Logout?');">
- <img  src="img/image8.png" alt="Logout"></a></div>-->
- 
 
  <div id="settings" class="settings_panel togglehide">
 	<div style="text-align:center;"><h2>Settings</h2></div>
@@ -1246,7 +1254,7 @@ if(count($forms)>0){
  <div id="gallery" class="icongallery">
  <img src="img/images.jpg">
  </div>
-
+ 
  <script type="text/javascript" src="switcher.js"></script>
 
 </body>
