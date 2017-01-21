@@ -54,36 +54,64 @@ else{
 
 }
 
-if(isset($_POST['settings'])){
-/* 	foreach( $_POST as $stuff ) {
-    if( is_array( $stuff ) ) {
-        foreach( $stuff as $thing ) {
-            echo "<br>".$thing;
-        }
-    } else {
-        echo "<br>"."stuffs".$stuff;
-    }
-} */
-
-$chng=$_POST['settings'];
-$chng.=",";
+if(isset($_POST['roomicon'])){
+	$chng=$_POST['roomicon'];
+	$chng.=",";
 $chngcomma=substr_count($chng,",");
-//echo $chng." => ".$chngcomma ."<br>";
+$json_file = file_get_contents($filename);//1|-20X-40,2|-12X10
+$stats = json_decode($json_file);
+foreach ($stats->status as $i => $stat) {
+	//for($k=0,$currentpos=0;$k<$chngcomma;$k++){
+	$pos = substr($chng,0,strpos($chng, ","));
+	$posno=substr($pos,0,strpos($pos, "|"));
+	if($i==$posno){	//$stat->id=substr($stat->id,0,strpos($stat->id,'|',0)+1).$roomnm;
+	//substr($pos,strpos($pos, "-")+1,1)
+	//$stat->$p16=substr($stat->$p16,0,2).substr($pos,strpos($pos, "-")+2,1);
+	$stat->id=substr($stat->id,0,4).str_replace('X',',',substr($pos,strpos($pos, "|")+1)).substr($stat->id,strpos($stat->id,'|',0));
+	//echo substr($stat->id,0,4).str_replace('X',',',substr($pos,strpos($pos, "|")+1)).substr($stat->id,strpos($stat->id,'|',0));
+	$currentpos=strpos($chng, ",")+1;
+	$chng=substr($chng,$currentpos,strlen($chng)-$currentpos);
+	//}
+  }
+}
+$json = json_encode($stats, JSON_PRETTY_PRINT);
+file_put_contents($filename, $json); 
+}
+
+if(isset($_POST['roomname'])){
+	$chng=$_POST['roomname'];
+	$chng.=",";
+$chngcomma=substr_count($chng,",");
+$json_file = file_get_contents($filename);//1|Bed Room,2|Kitchen
+$stats = json_decode($json_file);
+foreach ($stats->status as $i => $stat) {
+	//for($k=0,$currentpos=0;$k<$chngcomma;$k++){
+	$pos = substr($chng,0,strpos($chng, ","));
+	$posno=substr($pos,0,strpos($pos, "|"));
+	if($i==$posno){	//$stat->id=substr($stat->id,0,strpos($stat->id,'|',0)+1).$roomnm;
+	//substr($pos,strpos($pos, "-")+1,1)
+	//$stat->$p16=substr($stat->$p16,0,2).substr($pos,strpos($pos, "-")+2,1);
+	$stat->id=substr($stat->id,0,strpos($stat->id,'|')+1).substr($pos,strpos($pos, "|")+1);
+	//echo substr($stat->id,0,strpos($stat->id,'|')+1).substr($pos,strpos($pos, "|")+1);
+	//substr($stat->id,0,4).str_replace('X',',',substr($pos,strpos($pos, "|")+1)).substr($stat->id,strpos($stat->id,'|',0));
+	$currentpos=strpos($chng, ",")+1;
+	$chng=substr($chng,$currentpos,strlen($chng)-$currentpos);
+}
+}
+$json = json_encode($stats, JSON_PRETTY_PRINT);
+file_put_contents($filename, $json); 
+}
+if(isset($_POST['settings'])){
+$chng=$_POST['settings'];//1-1A,1-4C,2-3S
+$chng.=",";
+$chngcomma=substr_count($chng,",");//echo $chng." => ".$chngcomma ."<br>";
 $json_file = file_get_contents($filename);//
 $stats = json_decode($json_file);
 
-foreach ($stats->status as $i => $stat) {
-	//$rnm='roomname'.$i;
-	if(isset($_POST['roomname'.$i])){
-		$roomnm=$_POST['roomname'.$i];
-		//echo $roomnm;
-		$stat->id=substr($stat->id,0,6).$roomnm;
-	}
-	
-for($k=0,$currentpos=0;$k<$chngcomma;$k++){
-//echo "<br>".$currentpos." next= ".$chng;
-	$pos = substr($chng,0,strpos($chng, ","));
-	//echo "<br>val= ".$pos;
+foreach ($stats->status as $i => $stat) {	//$rnm='roomname'.$i;
+		
+for($k=0,$currentpos=0;$k<$chngcomma;$k++){//echo "<br>".$currentpos." next= ".$chng;
+	$pos = substr($chng,0,strpos($chng, ","));//echo "<br>val= ".$pos;
 /*if(strpos($pos, "|")>0)
 	$posno=substr($pos,0,strpos($pos, "|"));
 
@@ -125,7 +153,6 @@ if($i==$posno){
 $currentpos=strpos($chng, ",")+1;
 $chng=substr($chng,$currentpos,strlen($chng)-$currentpos);
 }
-
 }
 //$chng=substr(lastIndexOf(2),3);
 //lastIndexOf("/")+1,nm.lastIndexOf("-on.pn"
@@ -143,7 +170,7 @@ foreach ($stats->status as $i => $stat) {
 //$id1="device-id";
 //echo substr($stat->$id1,4,strlen($stat->$id1)-4);
 $ids[$i]=substr($stat->id,0,3);
-$room[$i]=substr($stat->id,6,strlen($stat->id)-4);
+$room[$i]=substr($stat->id,strpos($stat->id,'|',0)+1);//6,strlen($stat->id)-4);
 
 //echo "<br> ".$room[$i]." is ".$ids[$i];
 // write here
@@ -284,9 +311,9 @@ $display[$i]="
 $forms[$i]="
 <!--	<h3 style='padding: 0px 10px;left:13px;position: relative;display: inline-block;'>Room Name:</h3>-->
 	
-<input type='text' id='changeroom".$i."' name='roomname".$i."' placeholder='".$room[$i]."' style='border: 2px solid #ccc;padding: 6px;margin:0px 0px 10px 20px;width:210px;' >
+<input type='text' id='changeroom".$i."' name='roomname".$i."' placeholder='".$room[$i]."' style='border: 2px solid #ccc;padding: 6px;margin:10px 0px 10px 18px;width:210px;' >
 <div class='imagess' style='padding-top:3%;'>
-	<div id='roomimg".$i."' class='icon_butn'></div>
+	<div id='roomimg".$i."' class='icon_butn' alt='0,0'></div>
 </div>
 
 	<div class='icon-btn'>
@@ -324,7 +351,7 @@ $forms[$i]="
 	<img src='img/on/C.png'>
 	<img src='img/on/D.png'>
 	<img src='img/on/E.png'>
-	</div></div></div></div></div><hr>
+	</div></div></div></div></div>
 ";
 for($j=1;$j<=4;$j++){
 	$scrpt[$i]=$scrpt[$i]."
@@ -410,8 +437,7 @@ $t1=date_timestamp_get(date_create(date('D M d, Y h:i:s A')))-date_timestamp_get
 <html>
 <head>
 <meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Welcome Home <?php echo $username;?></title>
   <!--   <META HTTP-EQUIV="refresh" CONTENT="120">
  <php
@@ -438,9 +464,6 @@ $t1=date_timestamp_get(date_create(date('D M d, Y h:i:s A')))-date_timestamp_get
 	width: 84px;
 height: 84px;
 display: inline-block;
-margin: -9px -14px;
-
-	
 }
 
 #gallery{
@@ -493,11 +516,10 @@ top:3%;
 .settings_panel {
     position:absolute;
 	left: 40%;
-	top: 50%;
+	top: 25%;
 	background-color: #f9f9f9;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	opacity: 1;
-    width:25%;
+	width:25%;
 }
 .icongallery{
 	display: none;
@@ -606,20 +628,15 @@ padding: 16px 0px;
 	height:40px;
 }
 
-
 /* code written by VEda*/
 .navbar-inverse{
- 	width:100%;
-	position:fixed;
+ 	width:100%;		
 	z-index:99;
  }
  	.container-fluid{
  		background-color: #00004D;
  		color:white;
  	}
-
-
- 	
 
 .menubar {
     /*display: inline-block;*/
@@ -751,7 +768,8 @@ p, p a { font-size: 12px;text-align: center; color: #888; }
  }
 .container-fluid{
 	width:101.6%;
-	position: absolute;
+	height: 150px;
+	/*position: absolute;*/
     white-space: nowrap;
     overflow: hidden;
 }
@@ -857,34 +875,30 @@ font-size:15px;
     position: relative;
     display: inline-block;
     padding-left: 23px;
-	
+	margin-bottom:3px;
 }
 .imagess {
 float: right;
-margin-right: 40px;
+margin-right: 54px;
 width:32px;
 }
 
 @media only screen and (max-width: 360px) {
-	
 	.navbar-brand{
-	color:white;
-	font-size:25px;
-	margin-top:2px;
-}
-
-.menubar {
-    /* display: inline-block; */
-    cursor: pointer;
-    position: absolute;
-    left: 86%;
-    top: 10%;
-}
-.container-fluid {
-	
-	height:50px;
-}
-
+		color:white;
+		font-size:25px;
+		margin-top:2px;
+	}
+	.menubar {
+	   /* display: inline-block; */
+	    cursor: pointer;
+	    position: absolute;
+	    left: 86%;
+	    top: 10%;
+	}
+	.container-fluid {
+		height:50px;
+	}
 	.dropdown-content {
 	left: 17px;
 	top:45px;
@@ -901,27 +915,24 @@ width:32px;
 
 #savebtn { 
 font-size:18px;
-left: -40%;
+/*left: -40%;*/
 }
 
 #cancelbtn {
 font-size:18px;	
 }
 .block {
-	margin-top: 136px;
-    margin-bottom: 10px;
+	/*margin-top: 136px;
+    margin-bottom: 10px;*/
 }
 
 .settings_panel {
     position: absolute;
-    left: 7%;
-    top: 37%;
+    width: 90%;
+    height:65%;
+	left:5%;
     background-color: #f9f9f9;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    opacity: 1;
-    filter: alpha(opacity=50);
-    width: 85%;
-    height:60%;
 	
 }
 
@@ -953,7 +964,14 @@ margin-top:10px;
     padding-left: 0px;
 }
 #menu {
-	
+		top: 8%;
+		left: 72%;		
+	}
+.navbar-inverse{
+	position:fixed;
+}
+.imagess {
+margin: 5px 60px 5px 0px;
 }
 }
 
@@ -1027,22 +1045,32 @@ $(document).ready(function(){
  $('.alertbox').click(function(){$('.alertbox').hide();$('.popup').hide();});
   
 $('.menubar').click(function() {    $('.menubar').toggleClass('change');});
- $('#settings_btn').click(function(){
-	if($('.settings_panel').hasClass('togglehide')){
+ 
+ $('#settings_btn').click(function(){//		alert("12e423423");
+ $('.menubar').toggleClass('change');
+	if($('.settings_panel').hasClass('togglehide')){//		alert("sdjcgjhdc");
 	//update the settings field
-	$.post( 'update.php', { settings : <?php echo $userId; ?> }, function(data) { 	//alert("dhgd ff "+data);
-		//callback(JSON.parse(data));
+	$.post( 'update.php', { settings : <?php echo $userId; ?> }, function(data) {//	alert("its  "+data);		//callback(JSON.parse(data));
 		var result=JSON.parse(data);
 		for(var i=0;i<result.length;i++){
-			for(var j=0;j<5;j++){
+			for(var j=0;j<5;j++){//	alert("its  "+result[i][j]);
 				if(!j){
 					var rname='#changeroom'+i;//alert(rname);
 					$(rname).val("");
-					$(rname).attr('placeholder',result[i][j]);
+					$(rname).attr('placeholder',result[i][j].substr(result[i][j].indexOf("|")+1));
+					rname="#roomimg"+i;
+					$(rname).attr("alt",result[i][j].substr(0,result[i][j].indexOf("|")));
+					var posx=result[i][j].substr(0,result[i][j].indexOf(","))+'px';
+					var posy=result[i][j].substr(result[i][j].indexOf(",")+1,result[i][j].indexOf("|")-result[i][j].indexOf(",")-1)+'px'; 
+					//alert(posx+"\n"+posy);
+					//alert(result[i][j].substr(result[i][j].indexOf(",")+1,result[i][j].indexOf("|")-result[i][j].indexOf(",")-1));
+					$(rname).css({'background-position-x': posx, 'background-position-y': posy});
 					//alert('Room '+i+' is a '+result[i][j]);
 				}else{
-					
-					//alert('Button '+j +' is a '+result[i][j]);
+					var rname='#icon-btn'+j;
+					rname+=i + ' img';
+					$(rname).attr('src',"img/on/"+result[i][j]+".png");
+					//alert(rname+'Button '+j +' is a '+result[i][j]);
 				}
 			}
 			//alert(pin[i]);
@@ -1067,15 +1095,24 @@ $('.settings_panel').toggleClass('togglehide');
  
   $('#setform').one('submit',function(e){//function processForm() {//$('#savebtn').live("click", function () {// $('#savebtn').click(function(e){//
 	var arr=[];
+	 var roomico=[];
+	 var roomnm=[];
 	for(var i=0,k="";i<<?php echo $size; ?>;i++){
 		 var temp= [];
-		 k="#changeroom"+i;
-		// $(":input[value=''][value!='.']").attr('disabled', true);
-		 //alert($(k).val());
-		 if($(k).val()==""){
-			 //alert($(k).attr("placeholder"));
-			 $(k).attr('disabled', true);
-			 //temp.push("r"+i+"|"+$(k).val());
+		 k="#changeroom"+i;		// $(":input[value=''][value!='.']").attr('disabled', true);		 //alert($(k).val());
+		 if($(k).val()!=""){			 //alert($(k).attr("placeholder"));
+			roomnm.push(i+"|"+$(k).val());
+		}
+		$(k).attr('disabled', true);	 //temp.push("r"+i+"|"+$(k).val());
+		
+		k="#roomimg"+i;
+		var posx=$(k).css('background-position-x');
+		var posy=$(k).css('background-position-y');
+		
+		posx.substr(0,posx.indexOf("px"))+","+posy.substr(0,posy.indexOf("px"));//alert(posx);
+		if($(k).attr("alt")!=(posx.substr(0,posx.indexOf("px"))+","+posy.substr(0,posy.indexOf("px")))){
+			//send the postion though a varablr
+		roomico.push(i+"|"+posx.substr(0,posx.indexOf("px"))+"X"+posy.substr(0,posy.indexOf("px")));
 		}
 		 for(var j=1,nm="",al="";j<=4;j++){
 			k='#icon-btn'+j;
@@ -1083,24 +1120,24 @@ $('.settings_panel').toggleClass('togglehide');
 			nm=$(k).attr('src');
 			nm = nm.substring(nm.lastIndexOf("/")+1,nm.lastIndexOf(".png"));
 			al=$(k).attr('alt');
-			if(!(al==nm)){
-	  //$('<input>').attr('type', 'hidden').attr('name', i+','+j).attr('value', nm).appendTo('#setform');
+			if(!(al==nm)){	  //$('<input>').attr('type', 'hidden').attr('name', i+','+j).attr('value', nm).appendTo('#setform');
 				temp.push(i+"-"+j+nm);//alert(k+"\n"+res);
 			}
 		}
 		if(temp.length !== 0)
 			arr.push(temp);
-	}
-	//alert(arr.toString());
-	 $('<input>').attr('type', 'hidden').attr('name', 'settings').attr('value', arr.toString()).appendTo('#setform');
-	 //$(':input[value="k"]').attr('disabled', true);
-	 //alert(k);
-		//console.log( arr.serializeArray() );
-	//var push=JSON.stringify(arr);
-    //alert(push);
-//var array={"settings":arr};
-	// alert(JSON.stringify(array));
-	// e.preventDefault();
+	}	//	alert(roomico.toString());
+	 if(arr.length !== 0)$('<input>').attr('type', 'hidden').attr('name', 'settings').attr('value', arr.toString()).appendTo('#setform');
+	 if(roomico.length !== 0)$('<input>').attr('type', 'hidden').attr('name', 'roomicon').attr('value',roomico.toString()) .appendTo('#setform');
+	 if(roomnm.length !== 0)$('<input>').attr('type', 'hidden').attr('name', 'roomname').attr('value',roomnm.toString()) .appendTo('#setform');
+/* 	 $(':input[value="k"]').attr('disabled', true);
+	 alert(k);
+		console.log( arr.serializeArray() );
+	var push=JSON.stringify(arr);
+    alert(push);
+var array={"settings":arr};
+	alert(JSON.stringify(array));
+	e.preventDefault(); */
 /* 	$.post(window.location,{
                   data: array,
                   success: function (data) {
@@ -1127,11 +1164,18 @@ $('.settings_panel').toggleClass('togglehide');
         alert("Response Data" +data); //Log the server response to console
       });//alert("Does this alert appear first or second?");  */
  });
-$('#cancelbtn').click(function(){
-	$('.settings_panel').toggleClass('togglehide');
-	
-});
- $('.icongallery').click(function(e){
+
+ $('#cancelbtn').click(function(){ 
+/*  var k="#roomimg1";
+		var posx=$(k).css('background-position-x');
+		var posy=$(k).css('background-position-y');
+				alert(posx.substr(0,posx.indexOf("px"))+","+posy.substr(0,posy.indexOf("px")));//posx);
+		if($(k).attr("alt")!==(posx.substr(0,posx.indexOf("px"))+","+posy.substr(0,posy.indexOf("px")))){
+			alert("yes they are same");
+		}else{alert("no they are not same");} */
+		$('.settings_panel').toggleClass('togglehide');});
+ 
+$('.icongallery').click(function(e){
 	var offset = $(this).offset();
   var relativeX = (e.pageX - offset.left);
   var relativeY = (e.pageY - offset.top);
@@ -1142,20 +1186,9 @@ $('#cancelbtn').click(function(){
    
   var myClass = $(this).attr("alt");//   alert(myClass); icongallery from_btn40
 $('.icongallery').hide();  
-  $(myClass).css({'background-position-x': posx, 'background-position-y': posy});//.background-position();
- 
-/*  if(myClass.indexOf("from_btn")>0)  {
-	var btn=myClass.substr(myClass.indexOf("from_btn")+8,1);
-	var room=myClass.substr(myClass.indexOf("from_btn")+9,1);
-    var selct="#img" + btn+room;// alert(selct);
-  $('.icongallery').hide();  
-  $(selct).css({'background-position-x': posx, 'background-position-y': posy});//.background-position();
- selct="from_btn" + btn+room;// alert(selct);
- $(this).removeClass(selct);
-} *///else alert(myClass.indexOf("from_btn"));
+  $(myClass).css({'background-position-x': posx, 'background-position-y': posy});
 });
 });
-
 setInterval(function() {
 	updateall(function(result){
 		for(var i=0;i<result.length;i++){
@@ -1237,7 +1270,7 @@ echo "</form></div>"; */
  <div id="settings" class="settings_panel togglehide">
 	<div style="text-align:center;"><h2>Settings</h2></div>
    
-   <form id="setform" method="post" action="home.php"><div style="padding: 10px 0px;overflow-y:auto;height:25em;">
+   <form id="setform" method="post" action="home.php"><div style="padding: 10px 0px;overflow-y:auto;height:18em;">
 <?php 
 if(count($forms)>0){
 		foreach($forms as $i =>$frm){
